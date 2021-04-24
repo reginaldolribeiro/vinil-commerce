@@ -14,7 +14,8 @@ class KafkaConsumer(val saleService: SaleService) {
 
     @KafkaListener(
         topics = ["\${spring.kafka.topic}"],
-        groupId = "\${spring.kafka.group-id}"
+        groupId = "\${spring.kafka.group-id}",
+        errorHandler = "kafkaErrorHandler"
     )
     fun onMessage(message: ConsumerRecord<String, SaleRequest>) {
         logger.info("message consumed - sale request: ${message.value()}")
