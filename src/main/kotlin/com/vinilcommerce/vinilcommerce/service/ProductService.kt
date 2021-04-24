@@ -11,28 +11,39 @@ import java.time.LocalDateTime
 class ProductService(val productRepository: ProductRepository) {
 
     fun findAlbumsByGenre(genre: String?): MutableIterable<Product> {
-        if(genre == null){
+        if (genre == null) {
             return productRepository.findAll()
         }
-        try{
+        try {
             val genreEnum = genre.let { Genre.valueOf(genre.toUpperCase()) }
             return productRepository.findByGenreOrderByName(genreEnum)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             throw IllegalArgumentException("Genre not found!")
         }
     }
 
     fun findAlbumById(id: Long) =
         productRepository.findById(id)
-            .orElseThrow { NotFoundException("Product $id not found!") }
+            .orElseThrow { NotFoundException("Product not found!") }
 
     fun save(product: Product) = productRepository.save(product)
 
     fun update(product: Product, id: Long): Product {
         val productToBeSaved = findAlbumById(id)
-            .copy(name = product.name, artistName = product.artistName, genre = product.genre, price = product.price, updatedAt = LocalDateTime.now())
+            .copy(
+                name = product.name,
+                artistName = product.artistName,
+                genre = product.genre,
+                price = product.price,
+                updatedAt = LocalDateTime.now()
+            )
         return productRepository.save(productToBeSaved)
     }
 
-    fun delete(id: Long) = productRepository.deleteById(id)
+    fun delete(id: Long) {
+        if(!productRepository.existsById(id)){
+            throw NotFoundException("Product not found!")
+        }
+        productRepository.deleteById(id)
+    }
 }

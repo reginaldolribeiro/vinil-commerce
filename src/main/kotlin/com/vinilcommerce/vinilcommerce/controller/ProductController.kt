@@ -27,5 +27,6 @@ class ProductController(val productService: ProductService) {
     fun update(@RequestBody product: Product, @PathVariable id: Long) = productService.update(product, id)
 
     @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable id: Long) = productService.delete(id)
 }

@@ -3,7 +3,6 @@ package com.vinilcommerce.vinilcommerce.exception
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
-import java.lang.IllegalArgumentException
 import javax.servlet.http.HttpServletResponse
 
 @ControllerAdvice

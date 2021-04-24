@@ -21,14 +21,14 @@ class SaleService(
     private val cashbackService: CashbackService
 ) {
 
-    fun publishSaleMessage(saleRequest: SaleRequest){
+    fun publishSaleMessage(saleRequest: SaleRequest) {
         kafkaProducer.publishMessage(saleRequest)
     }
 
     @Transactional
-    fun sale(saleRequest: SaleRequest){
+    fun sale(saleRequest: SaleRequest) {
         val customer = customerService.findById(saleRequest.customerId)
-                            .orElseThrow { NotFoundException("Customer not found!") }
+            .orElseThrow { NotFoundException("Customer not found!") }
         val sale = Sale(customer = customer)
         sale.items = buildItemSale(saleRequest.products, sale)
         sale.calculate()
