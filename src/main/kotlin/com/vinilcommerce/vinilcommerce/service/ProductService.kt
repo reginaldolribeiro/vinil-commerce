@@ -24,7 +24,7 @@ class ProductService(val productRepository: ProductRepository) {
 
     fun findAlbumById(id: Long) =
         productRepository.findById(id)
-            .orElseThrow { NotFoundException("Product not found!") }
+            .orElseThrow { NotFoundException("Product $id not found!") }
 
     fun save(product: Product) = productRepository.save(product)
 
