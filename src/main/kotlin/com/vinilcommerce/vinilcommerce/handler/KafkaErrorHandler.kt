@@ -15,10 +15,7 @@ import java.io.PrintWriter
 import java.io.StringWriter
 
 @Component(value = "kafkaErrorHandler")
-class KafkaErrorHandler(
-    val kafkaTemplate: KafkaTemplate<String, SaleRequest>,
-    val kafkaTemplateForRequest: KafkaTemplate<String, SaleRequest>
-) : KafkaListenerErrorHandler {
+class KafkaErrorHandler(val kafkaTemplate: KafkaTemplate<String, SaleRequest>) : KafkaListenerErrorHandler {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
