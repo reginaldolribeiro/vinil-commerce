@@ -7,11 +7,11 @@ import javax.persistence.*
 @Entity
 data class Cashback (
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     val genre: Genre,
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     val dayOfWeek: DayOfWeek,
     val value: BigDecimal
 )

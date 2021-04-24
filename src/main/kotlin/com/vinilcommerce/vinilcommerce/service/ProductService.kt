@@ -5,6 +5,7 @@ import com.vinilcommerce.vinilcommerce.model.Genre
 import com.vinilcommerce.vinilcommerce.model.Product
 import com.vinilcommerce.vinilcommerce.repository.ProductRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class ProductService(val productRepository: ProductRepository) {
@@ -29,7 +30,7 @@ class ProductService(val productRepository: ProductRepository) {
 
     fun update(product: Product, id: Long): Product {
         val productToBeSaved = findAlbumById(id)
-            .copy(name = product.name, artistName = product.artistName, genre = product.genre, price = product.price)
+            .copy(name = product.name, artistName = product.artistName, genre = product.genre, price = product.price, updatedAt = LocalDateTime.now())
         return productRepository.save(productToBeSaved)
     }
 

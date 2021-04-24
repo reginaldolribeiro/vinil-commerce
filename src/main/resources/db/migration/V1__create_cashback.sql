@@ -5,7 +5,6 @@ CREATE TABLE public.cashback (
 	value numeric(19,2) NOT NULL,
 	created_at            TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at            TIMESTAMP,
-    deleted_at            TIMESTAMP,
 	CONSTRAINT cashback_pk PRIMARY KEY (id)
 );
 

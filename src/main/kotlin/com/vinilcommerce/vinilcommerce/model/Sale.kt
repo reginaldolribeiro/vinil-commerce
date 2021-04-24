@@ -1,17 +1,29 @@
 package com.vinilcommerce.vinilcommerce.model
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import java.math.BigDecimal
 import javax.persistence.*
 
 @Entity
 data class Sale(
     @Id
-    @GeneratedValue
-    val id: Long,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
     @OneToOne
     val customer: Customer,
-    val totalValue: BigDecimal = BigDecimal.ZERO,
-    val totalCashback: BigDecimal = BigDecimal.ZERO,
+    var totalValue: BigDecimal = BigDecimal.ZERO,
+    var totalCashback: BigDecimal = BigDecimal.ZERO,
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "sale", cascade = [CascadeType.ALL])
-    val itens: List<ItemSale> = ArrayList<ItemSale>()
-)
+    var items: List<ItemSale> = emptyList()
+) {
+    fun calculateTotalCashback() = items.map { item -> item.cashbackValue }.reduce { acc, next -> acc.plus(next) }
+    fun calculateTotalValue() = items.map { item -> item.price }.reduce { acc, next -> acc.plus(next) }
+    fun calculate(){
+        items.forEach { item ->
+            this.totalCashback = this.totalCashback.add(item.cashbackValue)
+            this.totalValue = this.totalValue.add(item.price.plus())
+        }
+    }
+}

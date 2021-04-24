@@ -6,6 +6,5 @@ CREATE TABLE public.product (
 	price numeric(19,2) NOT NULL,
 	created_at            TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at            TIMESTAMP,
-    deleted_at            TIMESTAMP,
 	CONSTRAINT product_pk PRIMARY KEY (id)
 );

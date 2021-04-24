@@ -7,7 +7,6 @@ CREATE TABLE public.item_sale (
 	sale_id serial NOT NULL,
 	created_at            TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at            TIMESTAMP,
-    deleted_at            TIMESTAMP,
 	CONSTRAINT item_sale_pk PRIMARY KEY (id),
 	CONSTRAINT item_sale_product_fk FOREIGN KEY (product_id) REFERENCES public.product(id),
 	CONSTRAINT item_sale_sale_fk FOREIGN KEY (sale_id) REFERENCES public.sale(id)

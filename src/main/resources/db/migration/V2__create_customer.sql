@@ -5,7 +5,6 @@ CREATE TABLE public.customer (
 	name varchar(255) NOT NULL,
 	created_at            TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at            TIMESTAMP,
-    deleted_at            TIMESTAMP,
 	CONSTRAINT customer_pk PRIMARY KEY (id)
 );
 
