@@ -1,10 +1,8 @@
 package com.vinilcommerce.vinilcommerce.model
 
 import java.time.LocalDate
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import java.time.LocalDateTime
+import javax.persistence.*
 
 @Entity
 data class Customer(
@@ -13,5 +11,9 @@ data class Customer(
     val id: Long,
     val name: String,
     val birthDate: LocalDate,
-    val email: String
+    val email: String,
+    @Column(name = "created_at", updatable = false, nullable = false)
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    @Column(name = "updated_at", updatable = true)
+    val updatedAt: LocalDateTime? = null
 )

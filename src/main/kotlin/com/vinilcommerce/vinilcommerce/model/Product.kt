@@ -17,5 +17,5 @@ data class Product(
     @Column(name = "created_at", updatable = false, nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),
     @Column(name = "updated_at", updatable = true)
-    val updatedAt: LocalDateTime?
+    val updatedAt: LocalDateTime? = null
 )
