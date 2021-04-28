@@ -2,8 +2,6 @@
 
 Back-end for selling vinyl records.
 
-Use a Spotify API for an initial load of discs by musical genre (Rock, Pop, MPB and Classic).
-
 #### Cashback
 
 | Genre   | Sunday  | Monday  | Tuesday | Wednesday | Thursday | Friday | Saturday |
@@ -47,4 +45,3 @@ Use a Spotify API for an initial load of discs by musical genre (Rock, Pop, MPB 
   4. Gradle
   5. Postgres
   6. [Flyway](https://flywaydb.org/)
-  7. [Spotify Web API Java](https://github.com/thelinmichael/spotify-web-api-java)
