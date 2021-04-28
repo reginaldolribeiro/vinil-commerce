@@ -1,15 +1,17 @@
 # vinil-commerce
+
 Back-end for selling vinyl records.
+
 Use a Spotify API for an initial load of discs by musical genre (Rock, Pop, MPB and Classic).
 
-#### Regras de cashback
+#### Cashback
 
-| Gênero  | Domingo | Segunda | Terça | Quarta | Quinta | Sexta | Sábado |
-|---------|---------|---------|-------|--------|--------|-------|--------|
-| POP     | 25%     | 7%      | 6%    | 2%     | 10%    | 15%   | 20%    |
-| MPB     | 30%     | 5%      | 10%   | 15%    | 20%    | 25%   | 30%    |
-| CLASSIC | 35%     | 3%      | 5%    | 8%     | 13%    | 18%   | 25%    |
-| ROCK    | 40%     | 10%     | 15%   | 15%    | 15%    | 20%   | 40%    |
+| Genre   | Sunday  | Monday  | Tuesday | Wednesday | Thursday | Friday | Saturday |
+|---------|---------|---------|---------|-----------|----------|--------|----------|
+| POP     | 25%     | 7%      | 6%      | 2%        | 10%      | 15%    | 20%      |
+| MPB     | 30%     | 5%      | 10%     | 15%       | 20%      | 25%    | 30%      |
+| CLASSIC | 35%     | 3%      | 5%      | 8%        | 13%      | 18%    | 25%      |
+| ROCK    | 40%     | 10%     | 15%     | 15%       | 15%      | 20%    | 40%      |
 
   #### Endpoints REST
   1. (GET) Search discs by genre or all of them
