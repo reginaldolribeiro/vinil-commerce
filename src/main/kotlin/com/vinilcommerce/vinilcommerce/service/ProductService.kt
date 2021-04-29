@@ -11,14 +11,15 @@ import java.time.LocalDateTime
 class ProductService(val productRepository: ProductRepository) {
 
     fun findAlbumsByGenre(genre: String?): MutableIterable<Product> {
-        if (genre == null) {
-            return productRepository.findAll()
-        }
-        try {
-            val genreEnum = genre.let { Genre.valueOf(genre.toUpperCase()) }
-            return productRepository.findByGenreOrderByName(genreEnum)
-        } catch (e: Exception) {
-            throw IllegalArgumentException("Genre not found!")
+        return if (genre.isNullOrBlank()) {
+            productRepository.findAll()
+        } else {
+            try {
+                val genreEnum = genre.let { Genre.valueOf(genre.toUpperCase()) }
+                return productRepository.findByGenreOrderByName(genreEnum)
+            } catch (e: Exception) {
+                throw IllegalArgumentException("Genre not found!")
+            }
         }
     }
 
