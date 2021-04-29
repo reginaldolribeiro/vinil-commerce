@@ -28,7 +28,6 @@ class SaleService(
     @Transactional
     fun sale(saleRequest: SaleRequest) {
         val customer = customerService.findById(saleRequest.customerId)
-            .orElseThrow { NotFoundException("Customer not found!") }
         val sale = Sale(customer = customer)
         sale.items = buildItemSale(saleRequest.products, sale)
         sale.calculate()
@@ -61,5 +60,9 @@ class SaleService(
 
     private fun calculatedCashbackValue(originalPrice: BigDecimal, calculatedPrice: BigDecimal): BigDecimal =
         originalPrice.subtract(calculatedPrice)
+
+    fun findById(id: Long) = saleRepository.findById(id).orElseThrow { NotFoundException("Sale not found!") }
+
+    fun findAll() = saleRepository.findAll()
 
 }
