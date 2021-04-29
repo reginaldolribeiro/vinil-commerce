@@ -20,16 +20,34 @@ Back-end for selling vinyl records.
    - http://localhost:8080/api/album/200
     
   3. (GET) Search sale by ID: 
-   - http://localhost:8080/api/sale/1
+   - http://localhost:8080/api/sale/1     
 
   4. (POST) Create a new sale: 
    - http://localhost:8080/api/sale
     
-    Request body (JSON example)
+    Request body
     
     {
       "customer_id": 1,
       "products": [1,2,3]
+    }
+    
+  5. (GET) Search all customers or customer by ID
+   - http://localhost:8080/api/customer
+   - http://localhost:8080/api/customer/1
+
+  6. (POST) Create customer
+   - http://localhost:8080/api/customer
+
+  7. (PUT) Update customer
+   - http://localhost:8080/api/customer/1
+       
+    Request body
+    
+    {
+      "name": "Beltrano da Silveira",
+      "email": "beltranosilveira@gmail.com",
+      "birth_date": "1990-09-23"
     }
    
    
