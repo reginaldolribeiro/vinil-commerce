@@ -19,7 +19,8 @@ Back-end for selling vinyl records.
   2. (GET) Search disc by ID: 
    - http://localhost:8080/api/album/200
     
-  3. (GET) Search sale by ID: 
+  3. (GET) Search all sales or by ID: 
+   - http://localhost:8080/api/sale
    - http://localhost:8080/api/sale/1     
 
   4. (POST) Create a new sale: 
