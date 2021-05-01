@@ -3,6 +3,7 @@ CREATE TABLE public.sale (
 	customer_id serial NOT NULL,
 	total_value numeric(19,2) NOT NULL,
 	total_cashback numeric(19,2) NOT NULL,
+	sale_date             TIMESTAMP DEFAULT NOW() NOT NULL,
 	created_at            TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at            TIMESTAMP,
 	CONSTRAINT sale_pk PRIMARY KEY (id),

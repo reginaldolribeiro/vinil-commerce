@@ -14,6 +14,8 @@ data class Sale(
     val customer: Customer,
     var totalValue: BigDecimal = BigDecimal.ZERO,
     var totalCashback: BigDecimal = BigDecimal.ZERO,
+    @Column(name = "sale_date")
+    val saleDate: LocalDateTime = LocalDateTime.now(),
 
     @JsonManagedReference
     @OneToMany(mappedBy = "sale", cascade = [CascadeType.ALL])

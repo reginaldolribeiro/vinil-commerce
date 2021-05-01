@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.time.LocalTime
 
 @Service
 class SaleService(
@@ -32,6 +33,16 @@ class SaleService(
         sale.items = buildItemSale(saleRequest.products, sale)
         sale.calculate()
         saleRepository.save(sale)
+    }
+
+    fun findById(id: Long) = saleRepository.findById(id).orElseThrow { NotFoundException("Sale not found!") }
+
+    fun findByRangeDate(start: LocalDate?, end: LocalDate?): MutableList<Sale> {
+        return if (start == null || end == null) {
+            saleRepository.findAll()
+        } else {
+            saleRepository.findAllBySaleDateBetweenOrderBySaleDateDesc(start.atStartOfDay(), end.atTime(LocalTime.MAX))
+        }
     }
 
     private fun buildItemSale(products: List<Long>, sale: Sale): List<ItemSale> {
@@ -60,9 +71,5 @@ class SaleService(
 
     private fun calculatedCashbackValue(originalPrice: BigDecimal, calculatedPrice: BigDecimal): BigDecimal =
         originalPrice.subtract(calculatedPrice)
-
-    fun findById(id: Long) = saleRepository.findById(id).orElseThrow { NotFoundException("Sale not found!") }
-
-    fun findAll() = saleRepository.findAll()
 
 }
