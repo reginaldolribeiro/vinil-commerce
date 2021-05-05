@@ -15,9 +15,8 @@ class KafkaProducer(val kafkaTemplate: KafkaTemplate<String, SaleRequest>) {
     @Value("\${spring.kafka.topic}")
     val topic: String = ""
 
-    fun publishMessage(saleRequest: SaleRequest){
+    fun publishMessage(saleRequest: SaleRequest) {
         logger.info("message published - saleRequest: ${saleRequest}")
-//        val producerRecord = ProducerRecord<String, SaleRequest>(topic, saleRequest)
         val producerRecord = ProducerRecord(topic, "sale", saleRequest)
         kafkaTemplate.send(producerRecord)
     }
