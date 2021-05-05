@@ -5,6 +5,7 @@ import com.vinilcommerce.vinilcommerce.service.ProductService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 
 @RestController
@@ -16,8 +17,11 @@ class ProductController(val productService: ProductService) {
         return productService.findAlbumsByGenre(genre)
     }
 
-    @PostMapping
-    fun save(@RequestBody product: Product) = productService.save(product)
+    @PostMapping(produces = ["application/json"],consumes = ["application/json"])
+    @ResponseStatus(HttpStatus.CREATED)
+    fun save(@RequestBody @Valid product: Product): Product {
+        return productService.save(product)
+    }
 
     @GetMapping("{id}")
     fun findAlbumById(@PathVariable id: Long) =

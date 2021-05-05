@@ -10,7 +10,11 @@ import java.time.LocalDateTime
 @Service
 class ProductService(val productRepository: ProductRepository) {
 
+//    @Value("\${spring.chafundi}")
+//    val chafundi: String = ""
+
     fun findAlbumsByGenre(genre: String?): MutableIterable<Product> {
+//        println("******** chafundi: $chafundi ************")
         return if (genre.isNullOrBlank()) {
             productRepository.findAll()
         } else {
@@ -27,7 +31,10 @@ class ProductService(val productRepository: ProductRepository) {
         productRepository.findById(id)
             .orElseThrow { NotFoundException("Product not found!") }
 
-    fun save(product: Product) = productRepository.save(product)
+    fun save(product: Product): Product {
+        println("************* Entrou no SERVICE!!!! ************************")
+        return productRepository.save(product)
+    }
 
     fun update(product: Product, id: Long): Product {
         val productToBeSaved = findAlbumById(id)
