@@ -7,6 +7,7 @@ import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -21,7 +22,7 @@ import java.time.LocalDateTime
 
 @RunWith(SpringRunner::class)
 @WebMvcTest(ProductController::class)
-class ProductControllerTestMockMvc {
+class ProductControllerTest {
 
     @Autowired
     lateinit var mockMvc: MockMvc
@@ -47,14 +48,17 @@ class ProductControllerTestMockMvc {
             .andExpect(jsonPath("$.artist_name").value(productMock.artistName))
             .andExpect(jsonPath("$.genre").value(productMock.genre.toString()))
             .andExpect(jsonPath("$.price").value(productMock.price))
+
+        Mockito.verify(productService, Mockito.times(1)).findAlbumById(productMock.id)
     }
 
     @Test
     fun `#findAlbumsByGenre when a request with an existing genre it should return products with that genre`() {
-        BDDMockito.`when`(productService.findAlbumsByGenre("rock")).thenReturn(listOf(productMock))
+        val genreRequest = productMock.genre.toString().toLowerCase()
+        BDDMockito.`when`(productService.findAlbumsByGenre(genreRequest)).thenReturn(listOf(productMock))
         mockMvc.perform(
             MockMvcRequestBuilders
-                .get("/album?genre=rock")
+                .get("/album?genre=$genreRequest")
                 .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk())
             .andDo(MockMvcResultHandlers.print())
@@ -64,6 +68,8 @@ class ProductControllerTestMockMvc {
             .andExpect(jsonPath("[0].artist_name").value(productMock.artistName))
             .andExpect(jsonPath("[0].genre").value(productMock.genre.toString()))
             .andExpect(jsonPath("[0].price").value(productMock.price))
+
+        Mockito.verify(productService, Mockito.times(1)).findAlbumsByGenre(genreRequest)
     }
 
     @Test
@@ -86,6 +92,8 @@ class ProductControllerTestMockMvc {
             .andExpect(jsonPath("$[1].artist_name", notNullValue()))
             .andExpect(jsonPath("$[1].price", notNullValue()))
             .andExpect(jsonPath("$[1].created_at", notNullValue()))
+
+        Mockito.verify(productService, Mockito.times(1)).findAlbumsByGenre(null)
     }
 
     @Test
@@ -98,5 +106,7 @@ class ProductControllerTestMockMvc {
                 .get("/album?genre=$nonExistentGenre")
                 .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isNotFound)
+
+        Mockito.verify(productService, Mockito.times(1)).findAlbumsByGenre(nonExistentGenre)
     }
 }
