@@ -13,19 +13,18 @@ import javax.validation.Valid
 class ProductController(val productService: ProductService) {
 
     @GetMapping
-    fun findAlbumsByGenre(@RequestParam(value = "genre", required = false) genre: String?): MutableIterable<Product> {
-        return productService.findAlbumsByGenre(genre)
-    }
+    fun findAlbumsByGenre(@RequestParam(value = "genre", required = false) genre: String?) =
+        ResponseEntity.ok(productService.findAlbumsByGenre(genre))
+
+    @GetMapping("{id}")
+    fun findAlbumById(@PathVariable id: Long) =
+        ResponseEntity.ok(productService.findAlbumById(id))
 
     @PostMapping(produces = ["application/json"],consumes = ["application/json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun save(@RequestBody @Valid product: Product): Product {
         return productService.save(product)
     }
-
-    @GetMapping("{id}")
-    fun findAlbumById(@PathVariable id: Long) =
-        ResponseEntity.ok(productService.findAlbumById(id))
 
     @PutMapping("{id}")
     fun update(@RequestBody product: Product, @PathVariable id: Long) = productService.update(product, id)

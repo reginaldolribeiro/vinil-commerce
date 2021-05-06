@@ -10,9 +10,9 @@ import java.time.LocalDateTime
 @Service
 class ProductService(val productRepository: ProductRepository) {
 
-    fun findAlbumsByGenre(genre: String?): MutableIterable<Product> {
+    fun findAlbumsByGenre(genre: String?): List<Product> {
         return if (genre.isNullOrBlank()) {
-            productRepository.findAll()
+            productRepository.findAll().toList()
         } else {
             try {
                 val genreEnum = genre.let { Genre.valueOf(genre.toUpperCase()) }
