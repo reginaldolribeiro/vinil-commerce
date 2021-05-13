@@ -1,5 +1,6 @@
 package com.vinilcommerce.vinilcommerce.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.vinilcommerce.vinilcommerce.model.Genre
 import com.vinilcommerce.vinilcommerce.model.Product
 import com.vinilcommerce.vinilcommerce.service.ProductService
@@ -22,7 +23,7 @@ import java.time.LocalDateTime
 
 @RunWith(SpringRunner::class)
 @WebMvcTest(ProductController::class)
-class ProductControllerTest {
+class ProductControllerTest(@Autowired val objectMapper: ObjectMapper) {
 
     @Autowired
     lateinit var mockMvc: MockMvc
@@ -35,7 +36,7 @@ class ProductControllerTest {
 
     @Test
     fun `#findAlbumById when a request with a valid ID it should returns a valid product`() {
-        BDDMockito.`when`(productService.findAlbumById(productMock.id)).thenReturn(productMock)
+        BDDMockito.`when`(productService.findAlbumById(productMock.id!!)).thenReturn(productMock)
         mockMvc.perform(
             MockMvcRequestBuilders
                 .get("/album/10")
@@ -49,7 +50,7 @@ class ProductControllerTest {
             .andExpect(jsonPath("$.genre").value(productMock.genre.toString()))
             .andExpect(jsonPath("$.price").value(productMock.price))
 
-        Mockito.verify(productService, Mockito.times(1)).findAlbumById(productMock.id)
+        Mockito.verify(productService, Mockito.times(1)).findAlbumById(productMock.id!!)
     }
 
     @Test
@@ -108,5 +109,51 @@ class ProductControllerTest {
         ).andExpect(status().isNotFound)
 
         Mockito.verify(productService, Mockito.times(1)).findAlbumsByGenre(nonExistentGenre)
+    }
+
+    @Test
+    fun `#save when a request with a valid product it should be saved`() {
+        val product = Product(null, "Test album", "Test artist", Genre.ROCK, BigDecimal(35))
+        val productRequest = objectMapper.writer().writeValueAsString(product)
+
+        BDDMockito.`when`(productService.save(product)).thenReturn(productMock)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/album")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(productRequest)
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isCreated)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.id", notNullValue()))
+            .andExpect(jsonPath("$.name").value(productMock.name))
+            .andExpect(jsonPath("$.artist_name").value(productMock.artistName))
+            .andExpect(jsonPath("$.price").value(productMock.price))
+            .andExpect(jsonPath("$.created_at", notNullValue()))
+    }
+
+    @Test
+    fun `#update when a request with a valid product and ID it should update the product`(){
+        val product = Product(10, "Test album updated", "Test artist updated", Genre.ROCK, BigDecimal(35))
+        val productRequest = objectMapper.writer().writeValueAsString(product)
+
+        BDDMockito.`when`(productService.update(product, productMock.id!!)).thenReturn(product)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .put("/album/{id}", productMock.id)
+                .content(productRequest)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.id").value(product.id))
+            .andExpect(jsonPath("$.name").value(product.name))
+            .andExpect(jsonPath("$.artist_name").value(product.artistName))
+            .andExpect(jsonPath("$.price").value(product.price))
     }
 }

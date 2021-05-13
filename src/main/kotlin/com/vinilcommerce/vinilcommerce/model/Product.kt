@@ -8,7 +8,7 @@ import javax.persistence.*
 data class Product(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long?,
     val name: String,
     val artistName: String,
     @Enumerated(EnumType.STRING)
