@@ -20,7 +20,7 @@ class ProductController(val productService: ProductService) {
     fun findAlbumById(@PathVariable id: Long) =
         ResponseEntity.ok(productService.findAlbumById(id))
 
-    @PostMapping(produces = ["application/json"],consumes = ["application/json"])
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun save(@RequestBody @Valid product: Product): Product {
         return productService.save(product)
