@@ -60,7 +60,7 @@ Back-end for selling vinyl records.
   #### Technologies
   1. Kotlin
   2. Spring Boot
-  3. Unit tests
+  3. Mockito
   4. Gradle
   5. Postgres
   6. [Flyway](https://flywaydb.org/)
