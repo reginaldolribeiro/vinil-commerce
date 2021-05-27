@@ -4,22 +4,19 @@ import com.vinilcommerce.vinilcommerce.exception.NotFoundException
 import com.vinilcommerce.vinilcommerce.model.Genre
 import com.vinilcommerce.vinilcommerce.model.Product
 import com.vinilcommerce.vinilcommerce.repository.ProductRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
 class ProductService(val productRepository: ProductRepository) {
 
-    fun findAlbumsByGenre(genre: String?): List<Product> {
+    fun findAll(genre: String?, pageable: Pageable): Page<Product> {
         return if (genre.isNullOrBlank()) {
-            productRepository.findAll().toList()
+            productRepository.findAll(pageable)
         } else {
-            try {
-                val genreEnum = genre.let { Genre.valueOf(genre.toUpperCase()) }
-                return productRepository.findByGenreOrderByName(genreEnum)
-            } catch (e: Exception) {
-                throw IllegalArgumentException("Genre not found!")
-            }
+            findAlbumsByGenre(genre, pageable)
         }
     }
 
@@ -46,5 +43,15 @@ class ProductService(val productRepository: ProductRepository) {
             throw NotFoundException("Product not found!")
         }
         productRepository.deleteById(id)
+    }
+
+    private fun findAlbumsByGenre(genre: String, pageable: Pageable): Page<Product> {
+        val paginatedAlbums = try {
+            val genreEnum = genre.let { Genre.valueOf(genre.toUpperCase()) }
+            productRepository.findByGenreOrderByName(genreEnum, pageable)
+        } catch (e: Exception) {
+            throw IllegalArgumentException("Genre not found!")
+        }
+        return if (paginatedAlbums.content.size == 0) throw NotFoundException("Product not found") else paginatedAlbums
     }
 }
