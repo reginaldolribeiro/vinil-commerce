@@ -16,18 +16,18 @@ class ProductService(val productRepository: ProductRepository) {
         return if (genre.isNullOrBlank()) {
             productRepository.findAll(pageable)
         } else {
-            findAlbumsByGenre(genre, pageable)
+            findByGenre(genre, pageable)
         }
     }
 
-    fun findAlbumById(id: Long) =
+    fun findById(id: Long) =
         productRepository.findById(id)
             .orElseThrow { NotFoundException("Product not found!") }
 
     fun save(product: Product) = productRepository.save(product)
 
     fun update(product: Product, id: Long): Product {
-        val productToBeSaved = findAlbumById(id)
+        val productToBeSaved = findById(id)
             .copy(
                 name = product.name,
                 artistName = product.artistName,
@@ -45,13 +45,13 @@ class ProductService(val productRepository: ProductRepository) {
         productRepository.deleteById(id)
     }
 
-    private fun findAlbumsByGenre(genre: String, pageable: Pageable): Page<Product> {
-        val paginatedAlbums = try {
+    private fun findByGenre(genre: String, pageable: Pageable): Page<Product> {
+        val paginatedProducts = try {
             val genreEnum = genre.let { Genre.valueOf(genre.toUpperCase()) }
             productRepository.findByGenreOrderByName(genreEnum, pageable)
         } catch (e: Exception) {
             throw IllegalArgumentException("Genre not found!")
         }
-        return if (paginatedAlbums.content.size == 0) throw NotFoundException("Product not found") else paginatedAlbums
+        return if (paginatedProducts.content.size == 0) throw NotFoundException("Product not found") else paginatedProducts
     }
 }

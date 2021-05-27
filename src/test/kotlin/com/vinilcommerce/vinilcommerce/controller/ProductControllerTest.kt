@@ -38,8 +38,8 @@ class ProductControllerTest(@Autowired val objectMapper: ObjectMapper) {
         Product(10, "Test album", "Test artist", Genre.ROCK, BigDecimal(35), LocalDateTime.now(), null)
 
     @Test
-    fun `#findAlbumById when a request with a valid ID it should returns a valid product`() {
-        BDDMockito.`when`(productService.findAlbumById(productMock.id!!)).thenReturn(productMock)
+    fun `#findById when a request with a valid ID it should returns a valid product`() {
+        BDDMockito.`when`(productService.findById(productMock.id!!)).thenReturn(productMock)
         mockMvc.perform(
             MockMvcRequestBuilders
                 .get("/album/10")
@@ -53,11 +53,11 @@ class ProductControllerTest(@Autowired val objectMapper: ObjectMapper) {
             .andExpect(jsonPath("$.genre").value(productMock.genre.toString()))
             .andExpect(jsonPath("$.price").value(productMock.price))
 
-        Mockito.verify(productService, Mockito.times(1)).findAlbumById(productMock.id!!)
+        Mockito.verify(productService, Mockito.times(1)).findById(productMock.id!!)
     }
 
     @Test
-    fun `#findAlbumsByGenre when a request with an existing genre it should return products with that genre`() {
+    fun `#findByGenre when a request with an existing genre it should return products with that genre`() {
         val paginatedProductsMock = PageImpl(listOf(this.productMock, productMock))
         val genreRequest = productMock.genre.toString().toLowerCase()
         BDDMockito.`when`(productService.findAll(genreRequest, pageableMock)).thenReturn(paginatedProductsMock)
@@ -80,7 +80,7 @@ class ProductControllerTest(@Autowired val objectMapper: ObjectMapper) {
     }
 
     @Test
-    fun `#findAlbumsByGenre when a request without genre it should return all of products`() {
+    fun `#findByGenre when a request without genre it should return all of products`() {
         val paginatedProductsMock = PageImpl(listOf(this.productMock, productMock))
         BDDMockito.`when`(productService.findAll(null, pageableMock)).thenReturn(paginatedProductsMock)
         mockMvc.perform(
@@ -105,7 +105,7 @@ class ProductControllerTest(@Autowired val objectMapper: ObjectMapper) {
     }
 
     @Test
-    fun `#findAlbumsByGenre when a request with a non-existing genre it should return not found`() {
+    fun `#findByGenre when a request with a non-existing genre it should return not found`() {
         val nonExistentGenre = "aaa"
         BDDMockito.`when`(productService.findAll(nonExistentGenre, pageableMock))
             .thenThrow(IllegalArgumentException::class.java)

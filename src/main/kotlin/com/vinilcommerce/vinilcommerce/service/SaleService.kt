@@ -47,7 +47,7 @@ class SaleService(
 
     private fun buildItemSale(products: List<Long>, sale: Sale): List<ItemSale> {
         return products.map { productId ->
-            val product = productService.findAlbumById(productId)
+            val product = productService.findById(productId)
             val cashbackPercentage = getCashbackPercentage(product.genre)
             val calculatedPrice = getCalculatedPrice(product.price, cashbackPercentage)
             val calculatedCashbackValue = calculatedCashbackValue(product.price, calculatedPrice)

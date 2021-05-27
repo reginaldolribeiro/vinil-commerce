@@ -23,7 +23,7 @@ class ProductController(val productService: ProductService) {
 
     @GetMapping("{id}")
     fun findAlbumById(@PathVariable id: Long) =
-        ResponseEntity.ok(productService.findAlbumById(id))
+        ResponseEntity.ok(productService.findById(id))
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
